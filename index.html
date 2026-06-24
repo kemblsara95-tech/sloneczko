@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Przedszkole Słoneczko — Tu rosną małe marzenia</title>
+<style>
+  :root{
+    --sun: #F6B93B;
+    --sun-dark: #E8980E;
+    --leaf: #4C7A3D;
+    --leaf-dark: #335a27;
+    --cream: #FBF6EC;
+    --cream-deep: #F4EBD8;
+    --ink: #2E2A22;
+    --paper: #ffffff;
+    --coral: #F2784B;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: 'Quicksand', 'Trebuchet MS', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x:hidden;
+  }
+
+  @font-face{
+    font-family:'FredokaFallback';
+    src: local('Arial Rounded MT Bold');
+  }
+
+  h1,h2,h3, .display{
+    font-family: 'Baloo 2', 'Comic Sans MS', 'Quicksand', sans-serif;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position: sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 5%;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 18px rgba(0,0,0,0.06);
+  }
+  .logo{display:flex; align-items:center; gap:10px;}
+  .logo img{height:48px;}
+  .logo-text{font-size:0.78rem; color:var(--leaf-dark); font-weight:700; letter-spacing:0.5px;}
+  nav.links{display:flex; gap:28px; font-weight:600; color:var(--leaf-dark); font-size:0.98rem;}
+  nav.links a{position:relative; padding:4px 0; transition: color .2s;}
+  nav.links a:hover{color: var(--sun-dark);}
+  nav.links a::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px;
+    background: var(--sun); transition: width .25s ease;
+  }
+  nav.links a:hover::after{width:100%;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 11px 22px; border-radius: 30px;
+    font-weight:700; font-size:0.92rem;
+    border:none; cursor:pointer;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn:hover{transform: translateY(-2px);}
+  .btn-sun{background: var(--sun); color:#3a2a06; box-shadow:0 6px 16px rgba(246,185,59,0.45);}
+  .btn-leaf{background: var(--leaf); color:#fff; box-shadow:0 6px 16px rgba(76,122,61,0.35);}
+  .nav-cta{display:none;}
+  @media(min-width:980px){.nav-cta{display:inline-flex;}}
+  .burger{display:none; font-size:1.6rem; background:none; border:none; cursor:pointer; color:var(--leaf-dark);}
+  @media(max-width:979px){
+    nav.links{display:none;}
+    .burger{display:block;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    min-height: 92vh;
+    display:flex; align-items:center;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute; inset:0;
+    background-image:url('images/photo_2026-06-24_15-12-27.jpg');
+    background-size:cover; background-position: center center;
+    filter: saturate(1.08) brightness(1.02);
+  }
+  .hero-bg::after{
+    content:'';
+  }
+  .hero-overlay{
+    position:absolute; inset:0;
+    background: linear-gradient(100deg, rgba(40,35,15,0.55) 0%, rgba(40,35,15,0.28) 32%, rgba(40,35,15,0.05) 58%, rgba(40,35,15,0) 100%);
+  }
+  .hero-logo-badge{
+    position:absolute; top:24px; left:24px; z-index:3;
+    background: rgba(255,255,255,0.92);
+    border-radius: 18px;
+    padding: 10px 18px 10px 10px;
+    display:flex; align-items:center; gap:10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  }
+  .hero-logo-badge img{height:42px;}
+  @media(max-width:600px){
+    .hero-logo-badge{top:14px; left:14px; padding:7px 14px 7px 7px;}
+    .hero-logo-badge img{height:32px;}
+  }
+  .hero-sun-decor{
+    position:absolute; top:8%; right:6%; width:220px; height:220px;
+    opacity:0.9; animation: spin 30s linear infinite;
+    z-index:1;
+  }
+  @keyframes spin{ from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  @media (prefers-reduced-motion: reduce){ .hero-sun-decor{animation:none;} }
+
+  .hero-content{
+    position:relative; z-index:2;
+    max-width: 640px;
+    padding: 0 6% ;
+    color:#fff;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background: rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.4);
+    padding:6px 16px; border-radius:30px; font-size:0.85rem; font-weight:700;
+    margin-bottom: 22px; backdrop-filter: blur(4px);
+  }
+  .hero-content h1{
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    line-height:1.05;
+    margin-bottom: 14px;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.25);
+  }
+  .hero-content h1 .accent{ color: var(--sun); display:block; }
+  .hero-content p.tagline{
+    font-size: 1.35rem;
+    font-style: italic;
+    margin-bottom: 34px;
+    color: #FBF6EC;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .hero-btns{display:flex; gap:16px; flex-wrap:wrap;}
+
+  /* floating petal/butterfly decor */
+  .floaty{
+    position:absolute; z-index:2; pointer-events:none;
+    animation: float 7s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform: translateY(0) rotate(0deg);}
+    50%{transform: translateY(-22px) rotate(8deg);}
+  }
+
+  /* ---------- WHY SECTION ---------- */
+  section{padding: 90px 6%;}
+  .section-head{text-align:center; max-width:680px; margin: 0 auto 56px;}
+  .section-head .kicker{
+    color: var(--sun-dark); font-weight:800; letter-spacing:2px; text-transform:uppercase;
+    font-size:0.8rem; margin-bottom:10px; display:block;
+  }
+  .section-head h2{font-size: clamp(1.8rem, 3.4vw, 2.6rem); color: var(--leaf-dark);}
+  .section-head p{margin-top:14px; color:#5b5446; font-size:1.05rem;}
+
+  .why-grid{
+    display:grid; grid-template-columns: repeat(4,1fr); gap: 30px;
+    max-width: 1180px; margin:0 auto;
+  }
+  @media(max-width:900px){.why-grid{grid-template-columns: repeat(2,1fr);}}
+  @media(max-width:560px){.why-grid{grid-template-columns: 1fr;}}
+  .why-card{
+    background: var(--paper); border-radius: 22px; padding: 34px 26px;
+    text-align:center; box-shadow: 0 10px 30px rgba(76,60,20,0.07);
+    transition: transform .25s, box-shadow .25s;
+    border: 2px solid transparent;
+  }
+  .why-card:hover{transform: translateY(-8px) rotate(-0.5deg); box-shadow: 0 18px 36px rgba(76,60,20,0.14); border-color: var(--sun);}
+  .why-icon{
+    width:64px; height:64px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.8rem; margin: 0 auto 18px;
+  }
+  .ic1{background: #E4F0DE; color:var(--leaf);}
+  .ic2{background: #FCE9C9; color:var(--sun-dark);}
+  .ic3{background: #FBDFD3; color:var(--coral);}
+  .ic4{background: #E0EDF4; color:#3672A1;}
+  .why-card h3{font-size:1.12rem; margin-bottom:8px; color:var(--ink);}
+  .why-card p{font-size:0.92rem; color:#6b6354; line-height:1.5;}
+
+  /* ---------- GALLERY MASONRY ---------- */
+  .gallery-section{background: var(--cream-deep); position:relative;}
+  .gallery-grid{
+    max-width:1280px; margin:0 auto;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 230px;
+    gap: 16px;
+  }
+  .gallery-grid figure{
+    margin:0; position:relative; overflow:hidden; border-radius:18px;
+    box-shadow: 0 8px 22px rgba(60,45,10,0.12);
+    cursor:pointer;
+  }
+  .gallery-grid img{
+    width:100%; height:100%; object-fit:cover;
+    transition: transform .5s ease;
+  }
+  .gallery-grid figure:hover img{transform: scale(1.08);}
+  .gallery-grid figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding: 14px 16px 12px;
+    background: linear-gradient(to top, rgba(20,15,5,0.75), rgba(20,15,5,0));
+    color:#fff; font-size:0.85rem; font-weight:600;
+    opacity:0; transform: translateY(8px);
+    transition: opacity .3s, transform .3s;
+  }
+  .gallery-grid figure:hover figcaption{opacity:1; transform: translateY(0);}
+
+  .g-big{grid-column: span 2; grid-row: span 2;}
+  .g-tall{grid-row: span 2;}
+  .g-wide{grid-column: span 2;}
+
+  @media(max-width:980px){
+    .gallery-grid{grid-template-columns: repeat(2,1fr); grid-auto-rows:200px;}
+    .g-big{grid-column:span 2; grid-row:span 2;}
+  }
+  @media(max-width:600px){
+    .gallery-grid{grid-template-columns: 1fr; grid-auto-rows:230px;}
+    .g-big,.g-wide,.g-tall{grid-column:span 1; grid-row:span 1;}
+  }
+
+  /* lightbox */
+  .lightbox{
+    position:fixed; inset:0; background:rgba(20,15,5,0.92);
+    display:none; align-items:center; justify-content:center;
+    z-index:1000; padding: 40px;
+  }
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:90vw; max-height:85vh; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+  .lightbox-close{
+    position:absolute; top:24px; right:30px; font-size:2.2rem; color:#fff;
+    cursor:pointer; background:none; border:none; line-height:1;
+  }
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    background: rgba(255,255,255,0.15); border:none; color:#fff;
+    font-size:2rem; padding: 14px 18px; cursor:pointer; border-radius:10px;
+    transition: background .2s;
+  }
+  .lightbox-nav:hover{background: rgba(255,255,255,0.3);}
+  .lb-prev{left:24px;} .lb-next{right:24px;}
+
+  /* ---------- DAY + REVIEWS ---------- */
+  .day-reviews{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 50px;
+    max-width:1180px; margin:0 auto; align-items:start;
+  }
+  @media(max-width:880px){.day-reviews{grid-template-columns:1fr;}}
+
+  .day-card{
+    background:var(--paper); border-radius:24px; padding:36px;
+    box-shadow: 0 10px 30px rgba(76,60,20,0.07);
+  }
+  .day-card h3{color:var(--leaf-dark); font-size:1.4rem; margin-bottom:22px; display:flex; align-items:center; gap:10px;}
+  .timeline{list-style:none;}
+  .timeline li{
+    display:flex; gap:18px; align-items:flex-start; padding: 12px 0;
+    border-bottom: 1px dashed #e7ddc6;
+  }
+  .timeline li:last-child{border-bottom:none;}
+  .time-badge{
+    flex:0 0 64px; background: var(--sun); color:#3a2a06; font-weight:800;
+    border-radius:10px; padding:6px 0; text-align:center; font-size:0.85rem;
+  }
+  .timeline li span.desc{padding-top:6px; color:#5b5446;}
+
+  .review-stack{display:flex; flex-direction:column; gap:18px;}
+  .review-card{
+    background: var(--paper); border-radius:20px; padding: 26px 28px;
+    box-shadow: 0 10px 26px rgba(76,60,20,0.06);
+    position:relative;
+  }
+  .review-card::before{
+    content:'"'; position:absolute; top:6px; left:18px; font-size:3.4rem;
+    color: var(--sun); opacity:0.5; font-family: Georgia, serif;
+  }
+  .review-card p{color:#54503f; font-style:italic; margin-bottom:12px; padding-left:14px;}
+  .review-card .who{font-weight:700; color: var(--leaf-dark); padding-left:14px; font-size:0.92rem;}
+
+  /* ---------- MAP / CONTACT ---------- */
+  .contact-section{
+    background: var(--leaf); color:#fff; border-radius: 0;
+    position:relative; overflow:hidden;
+  }
+  .contact-section::before{
+    content:''; position:absolute; top:-60px; left:-60px; width:240px; height:240px;
+    background: var(--sun); opacity:0.15; border-radius:50%;
+  }
+  .contact-wrap{
+    display:grid; grid-template-columns: 1.1fr 1fr; gap:48px;
+    max-width:1180px; margin:0 auto; position:relative; z-index:1;
+  }
+  @media(max-width:900px){.contact-wrap{grid-template-columns:1fr;}}
+  .contact-wrap h2{color:#fff; margin-bottom:14px;}
+  .contact-wrap > div:first-child p{color:#dcebd3; margin-bottom: 28px; font-size:1.05rem;}
+  .contact-list{display:flex; flex-direction:column; gap:18px; margin-bottom: 30px;}
+  .contact-list .row{display:flex; gap:14px; align-items:flex-start;}
+  .contact-list .ic{
+    flex:0 0 38px; height:38px; border-radius:50%; background: rgba(255,255,255,0.15);
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+  }
+  .map-frame{
+    border-radius:20px; overflow:hidden; box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    border: 4px solid rgba(255,255,255,0.25);
+  }
+  .map-frame iframe{width:100%; height:380px; border:none; display:block;}
+
+  /* ---------- FOOTER CTA STRIP ---------- */
+  .cta-strip{
+    background: var(--sun);
+    border-radius: 28px;
+    max-width:1180px; margin: -50px auto 80px;
+    padding: 36px 44px;
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    box-shadow: 0 18px 40px rgba(232,152,14,0.35);
+    position:relative; z-index:5;
+  }
+  .cta-strip h3{font-size:1.4rem; color:#3a2a06;}
+  .cta-strip p{color:#5a4007; font-size:0.95rem;}
+
+  footer.site-footer{
+    background: #2c2417; color:#cfc6ad; padding: 56px 6% 28px;
+  }
+  .footer-grid{
+    display:grid; grid-template-columns: 1.3fr 1fr 1fr; gap:40px;
+    max-width:1180px; margin:0 auto 30px;
+  }
+  @media(max-width:760px){.footer-grid{grid-template-columns:1fr;}}
+  .footer-grid h4{color:#fff; margin-bottom:14px; font-size:1rem;}
+  .footer-logo{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .footer-logo img{height:40px; filter: brightness(0) invert(1) opacity(0.9);}
+  .footer-grid p, .footer-grid a{font-size:0.9rem; color:#b7ad94; line-height:1.7;}
+  .footer-bottom{
+    border-top:1px solid #463c29; padding-top:22px; text-align:center;
+    font-size:0.82rem; color:#8d8369; max-width:1180px; margin:0 auto;
+  }
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:none;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="logo">
+    <img src="images/przedszkole.png" alt="Przedszkole Słoneczko logo">
+  </div>
+  <nav class="links">
+    <a href="#start">Strona główna</a>
+    <a href="#o-nas">O nas</a>
+    <a href="#galeria">Galeria</a>
+    <a href="#dzien">Nasz dzień</a>
+    <a href="#kontakt">Kontakt</a>
+  </nav>
+  <button class="btn btn-sun nav-cta">☀ Zapisz dziecko</button>
+  <button class="burger">☰</button>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="start">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-logo-badge">
+    <img src="images/przedszkole.png" alt="Przedszkole Słoneczko logo">
+  </div>
+  <svg class="hero-sun-decor" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="22" fill="#F6B93B"/>
+    <g stroke="#F6B93B" stroke-width="5" stroke-linecap="round">
+      <line x1="50" y1="6" x2="50" y2="18"/>
+      <line x1="50" y1="82" x2="50" y2="94"/>
+      <line x1="6" y1="50" x2="18" y2="50"/>
+      <line x1="82" y1="50" x2="94" y2="50"/>
+      <line x1="18" y1="18" x2="26" y2="26"/>
+      <line x1="74" y1="74" x2="82" y2="82"/>
+      <line x1="18" y1="82" x2="26" y2="74"/>
+      <line x1="74" y1="26" x2="82" y2="18"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <span class="eyebrow">🌻 Przedszkole Publiczne</span>
+    <h1>SŁONECZKO<span class="accent">Tu rosną małe marzenia</span></h1>
+    <p class="tagline">Blisko natury, blisko dzieci — każdy dzień to nowa przygoda. 🌿</p>
+    <div class="hero-btns">
+      <button class="btn btn-sun">❤ Zapisz dziecko</button>
+      <button class="btn btn-leaf">📅 Umów spotkanie</button>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SECTION -->
+<section id="o-nas">
+  <div class="section-head reveal">
+    <span class="kicker">Dlaczego my</span>
+    <h2>Dlaczego Słoneczko? ☀️</h2>
+    <p>Cztery powody, dla których rodzice wybierają nas — i dla których dzieci nie chcą wracać do domu.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal">
+      <div class="why-icon ic1">🌳</div>
+      <h3>Blisko natury</h3>
+      <p>Codzienne spacery, zabawy na świeżym powietrzu i kontakt z przyrodą.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon ic2">🎨</div>
+      <h3>Kreatywne zajęcia</h3>
+      <p>Rozwijamy talenty, ciekawość świata i wyobraźnię każdego dziecka.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon ic3">💛</div>
+      <h3>Przyjazna atmosfera</h3>
+      <p>Małe grupy, ciepło, uważność i indywidualne podejście do każdego dziecka.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-icon ic4">👨‍👩‍👧</div>
+      <h3>Doświadczona kadra</h3>
+      <p>Wykwalifikowani nauczyciele z pasją i wieloletnim doświadczeniem.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="galeria">
+  <div class="section-head reveal">
+    <span class="kicker">Z życia przedszkola</span>
+    <h2>Nasza galeria 📸</h2>
+    <p>Bieganie, malowanie, bańki, baseny z piłeczkami — tak wygląda u nas zwyczajny dzień.</p>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid">
+    <figure class="g-big" data-full="images/photo_2_2026-06-24_12-57-39.jpg"><img src="images/photo_2_2026-06-24_12-57-39.jpg" alt="Biegi przedszkolaków"><figcaption>Sportowy bieg „Słoneczko”</figcaption></figure>
+    <figure data-full="images/photo_1_2026-06-24_12-57-39.jpg"><img src="images/photo_1_2026-06-24_12-57-39.jpg" alt="Malowanie misiów"><figcaption>Zajęcia plastyczne</figcaption></figure>
+    <figure data-full="images/photo_3_2026-06-24_12-57-50.jpg"><img src="images/photo_3_2026-06-24_12-57-50.jpg" alt="Wystawa prac dzieci"><figcaption>Wiosenna wystawa prac</figcaption></figure>
+    <figure class="g-tall" data-full="images/photo_5_2026-06-24_12-57-39.jpg"><img src="images/photo_5_2026-06-24_12-57-39.jpg" alt="Tańce na dworze"><figcaption>Taniec na świeżym powietrzu</figcaption></figure>
+    <figure data-full="images/photo_6_2026-06-24_12-57-39.jpg"><img src="images/photo_6_2026-06-24_12-57-39.jpg" alt="Zabawa w kole"><figcaption>Zabawy ruchowe</figcaption></figure>
+    <figure class="g-wide" data-full="images/photo_7_2026-06-24_12-57-39.jpg"><img src="images/photo_7_2026-06-24_12-57-39.jpg" alt="Bańki mydlane"><figcaption>Bańki mydlane na podwórku</figcaption></figure>
+    <figure data-full="images/photo_8_2026-06-24_12-57-39.jpg"><img src="images/photo_8_2026-06-24_12-57-39.jpg" alt="Grupa na kocach"><figcaption>Piknik na trawie</figcaption></figure>
+    <figure data-full="images/photo_9_2026-06-24_12-57-39.jpg"><img src="images/photo_9_2026-06-24_12-57-39.jpg" alt="Piknik na placu zabaw"><figcaption>Piknik na placu zabaw</figcaption></figure>
+    <figure data-full="images/photo_10_2026-06-24_12-57-39.jpg"><img src="images/photo_10_2026-06-24_12-57-39.jpg" alt="Zjeżdżalnia dmuchana"><figcaption>Dmuchana zjeżdżalnia</figcaption></figure>
+    <figure data-full="images/photo_4_2026-06-24_12-57-39.jpg"><img src="images/photo_4_2026-06-24_12-57-39.jpg" alt="Pompony na festynie"><figcaption>Festyn przedszkolny</figcaption></figure>
+    <figure class="g-wide" data-full="images/photo_1_2026-06-24_12-57-50.jpg"><img src="images/photo_1_2026-06-24_12-57-50.jpg" alt="Tor przeszkód"><figcaption>Tor przeszkód na trawie</figcaption></figure>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">&times;</button>
+  <button class="lightbox-nav lb-prev" id="lbPrev">&#8249;</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lightbox-nav lb-next" id="lbNext">&#8250;</button>
+</div>
+
+<!-- DAY + REVIEWS -->
+<section id="dzien">
+  <div class="day-reviews">
+    <div class="day-card reveal">
+      <h3>🕐 Nasz dzień</h3>
+      <ul class="timeline">
+        <li><span class="time-badge">08:00</span><span class="desc">Schodzenie się dzieci, zabawy dowolne</span></li>
+        <li><span class="time-badge">09:00</span><span class="desc">Śniadanie</span></li>
+        <li><span class="time-badge">10:00</span><span class="desc">Zajęcia edukacyjne</span></li>
+        <li><span class="time-badge">12:00</span><span class="desc">Obiad</span></li>
+        <li><span class="time-badge">13:00</span><span class="desc">Odpoczynek</span></li>
+        <li><span class="time-badge">15:00</span><span class="desc">Podwieczorek</span></li>
+        <li><span class="time-badge">15:30</span><span class="desc">Zabawy i zajęcia dodatkowe</span></li>
+      </ul>
+    </div>
+
+    <div class="reveal">
+      <h3 style="color:var(--leaf-dark); font-size:1.4rem; margin-bottom:22px;">💛 Co mówią rodzice?</h3>
+      <div class="review-stack">
+        <div class="review-card">
+          <p>Córka każdego dnia wraca szczęśliwa i pełna wrażeń. Cudowna kadra i wspaniała atmosfera!</p>
+          <div class="who">— Mama Hani</div>
+        </div>
+        <div class="review-card">
+          <p>Tyle wycieczek, festynów i zabawy na świeżym powietrzu — nasz syn nie chce wracać do domu.</p>
+          <div class="who">— Tata Antosia</div>
+        </div>
+        <div class="review-card">
+          <p>Indywidualne podejście do każdego dziecka widać na każdym kroku. Polecamy z całego serca.</p>
+          <div class="who">— Rodzice Zuzi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / MAP -->
+<section class="contact-section" id="kontakt">
+  <div class="contact-wrap">
+    <div class="reveal">
+      <h2>Zapisz dziecko do Słoneczka! 🌻</h2>
+      <p>Rekrutacja trwa, liczba miejsc ograniczona — napisz lub zadzwoń, odpowiemy tego samego dnia.</p>
+      <div class="contact-list">
+        <div class="row"><div class="ic">📍</div><div>ul. Leśna 9<br>62-095 Murowana Goślina</div></div>
+        <div class="row"><div class="ic">📞</div><div>61 892 70 11</div></div>
+        <div class="row"><div class="ic">✉️</div><div>przedszkole@sloneczko.pl</div></div>
+      </div>
+      <button class="btn btn-sun">❤ Zapisz dziecko</button>
+    </div>
+    <div class="map-frame reveal">
+      <iframe
+        src="https://www.google.com/maps?q=ul.+Le%C5%9Bna+9,+62-095+Murowana+Go%C5%9Blina&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip reveal">
+  <div>
+    <h3>Liczba miejsc ograniczona 🌼</h3>
+    <p>Zapisz swoje dziecko już dziś i dołącz do rodziny Słoneczka.</p>
+  </div>
+  <button class="btn btn-leaf">ZAPISZ DZIECKO</button>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <img src="images/przedszkole.png" alt="logo">
+      </div>
+      <p>Tu rosną małe marzenia 🤍<br>Przedszkole Publiczne Słoneczko w Murowanej Goślinie.</p>
+    </div>
+    <div>
+      <h4>Szybkie linki</h4>
+      <p><a href="#o-nas">O nas</a><br><a href="#galeria">Galeria</a><br><a href="#dzien">Nasz dzień</a><br><a href="#kontakt">Kontakt</a></p>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <p>ul. Leśna 9, 62-095 Murowana Goślina<br>61 892 70 11<br>przedszkole@sloneczko.pl</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Przedszkole Publiczne Słoneczko · Polityka prywatności</div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>obs.observe(el));
+
+  // lightbox
+  const figs = Array.from(document.querySelectorAll('#galleryGrid figure'));
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  let idx = 0;
+  function openLb(i){
+    idx = i;
+    lbImg.src = figs[idx].dataset.full;
+    lb.classList.add('open');
+  }
+  figs.forEach((f,i)=> f.addEventListener('click', ()=> openLb(i)));
+  document.getElementById('lbClose').addEventListener('click', ()=> lb.classList.remove('open'));
+  lb.addEventListener('click', (e)=>{ if(e.target===lb) lb.classList.remove('open'); });
+  document.getElementById('lbPrev').addEventListener('click', ()=>{ idx=(idx-1+figs.length)%figs.length; lbImg.src=figs[idx].dataset.full; });
+  document.getElementById('lbNext').addEventListener('click', ()=>{ idx=(idx+1)%figs.length; lbImg.src=figs[idx].dataset.full; });
+  document.addEventListener('keydown', (e)=>{
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') lb.classList.remove('open');
+    if(e.key==='ArrowLeft') document.getElementById('lbPrev').click();
+    if(e.key==='ArrowRight') document.getElementById('lbNext').click();
+  });
+</script>
+
+</body>
+</html>
